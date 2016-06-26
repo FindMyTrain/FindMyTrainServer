@@ -1,5 +1,11 @@
 package findmytrainserver;
 
+/**
+ * QueryHandler is called FindMyTrainCore in presentation...
+ * It calculates curent location of train with inputs from users 
+ * */
+
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -7,8 +13,21 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class QueryHandler {
+/**
+ * Author
+ *
+ *   █████╗ ██╗   ██╗██████╗  ██████╗ 
+ *  ██╔══██╗██║   ██║██╔══██╗██╔═══██╗
+ *  ███████║██║   ██║██████╔╝██║   ██║
+ *  ██╔══██║██║   ██║██╔══██╗██║   ██║
+ *  ██║  ██║╚██████╔╝██║  ██║╚██████╔╝
+ *  ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ 
+ *
+ **/
 
+public class QueryHandler {
+    
+    /** For each spotting, Find where the spotting correspond to at timeNow() */
 	protected void getSpottingsNow() {
 
 		long timeNow = System.currentTimeMillis();
@@ -16,18 +35,23 @@ public class QueryHandler {
 		ArrayList<ArrayList<SpottingNow>> trnSpottingNowUP = new ArrayList<ArrayList<SpottingNow>>(),
 										  trnSpottingNowDOWN = new ArrayList<ArrayList<SpottingNow>>();
 		ArrayList<SpottingNow> tsNowUp, tsNowDown;
-
+        
+        /** Traverse for spottings across every route */
 		for (CopyOnWriteArrayList<Spotting> sRoute : Spotting.trnSpotting) {
 			tsNowUp = new ArrayList<SpottingNow>();
 			tsNowDown = new ArrayList<SpottingNow>();
-			for (Spotting ts : sRoute) {
+			/** Traverse every spottings of a route */
+            for (Spotting ts : sRoute) {
+                /** Get probability from how past the spotting is */
 				confidence = getConfidenceFromPast(ts.timeStamp, timeNow);
 				if (confidence > 0) {
+                    /** Find the distance travelled by the user since the user input was given */
 					distTravelled = findDistanceTravelled(ts, timeNow);
 					if (distTravelled < 0)	continue;
 					distNow = ts.direction == 1 ? ts.dist + distTravelled : ts.dist - distTravelled;
 					System.out.println(ts.dist+ " + " + distTravelled + " = " + distNow);
-					if (distNow > 0 && distNow < Station.routeLength[ts.route]) {
+					/** Insert new positions at time = timeNow() in new DataStructure trainspotingNow */
+                    if (distNow > 0 && distNow < Station.routeLength[ts.route]) {
 						if (ts.direction == 1)
 							tsNowUp.add(new SpottingNow(ts.userID, distNow, ts.route, ts.direction, timeNow, confidence));
 						else
@@ -41,7 +65,9 @@ public class QueryHandler {
 		SpottingNow.trnSpottingNow.add(trnSpottingNowUP);
 		SpottingNow.trnSpottingNow.add(trnSpottingNowDOWN);
 	}
+    
 
+    /** Get probablity of trains in every 100 m segments along routes */
 	protected void getPositionConfidence() {
 
 		double confDist, overAllConf, tempConf = 0;
@@ -58,6 +84,7 @@ public class QueryHandler {
 				for (int j = 0; j < Station.routeLength[i]; j += 100) {
 					tempConf = 1;
 					for (SpottingNow tsNow : sRouteNow) {
+                        /** Get confidence based on distance */
 						if (Math.abs(tsNow.distNow - j) < 2000) {
 							confDist = getConfidenceFromDistance(Math.abs(tsNow.distNow - j));
 							overAllConf = tsNow.confidence * confDist;
@@ -73,10 +100,12 @@ public class QueryHandler {
 		}
 	}
 
+    /** Compute peaks from position confidence */
 	protected void computePeaks() {
 		PositionConfidence psC = null;
 		int jStart, jEnd;
-
+        
+        /** Delete all such peaks which has any other peak in a range of distance */
 		for (ArrayList<ArrayList<PositionConfidence>> pcRouteDir : PositionConfidence.posnConf) {
 			for (int i = 0; i < pcRouteDir.size(); i++) {
 				for (int j = 0; j < pcRouteDir.get(i).size(); j++) {
@@ -103,6 +132,7 @@ public class QueryHandler {
 		}
 	}
 
+    /** Get the distance travelled by the user since its input time */
 	public double findDistanceTravelled(Spotting ts, long timeNow) {
 
 		String sql;

@@ -11,6 +11,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
+/**
+ * Author
+ *
+ *   █████╗ ██╗   ██╗██████╗  ██████╗ 
+ *  ██╔══██╗██║   ██║██╔══██╗██╔═══██╗
+ *  ███████║██║   ██║██████╔╝██║   ██║
+ *  ██╔══██║██║   ██║██╔══██╗██║   ██║
+ *  ██║  ██║╚██████╔╝██║  ██║╚██████╔╝
+ *  ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ 
+ *
+ **/
+
 @WebServlet("/Reporter")
 public class Reporter extends HttpServlet {
 	public static final Lock lock = new ReentrantReadWriteLock().writeLock();
@@ -35,6 +48,7 @@ public class Reporter extends HttpServlet {
 //			System.out.println("-------------------");
 //		}
 		
+        /** Get range in which train lies */
 		for (ArrayList<ArrayList<PositionConfidence>> pCon : PositionConfidence.posnConf) {
 			for (PositionConfidence pc : pCon.get(routeID)) 
 				if(pc.isPeak)	posCon.add(pc.distNow);

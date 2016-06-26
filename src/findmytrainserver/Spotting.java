@@ -1,8 +1,26 @@
 package findmytrainserver;
 
+/**
+ * Contains Data Structure definations */
+
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+
+/**
+ * Author
+ *
+ *   █████╗ ██╗   ██╗██████╗  ██████╗ 
+ *  ██╔══██╗██║   ██║██╔══██╗██╔═══██╗
+ *  ███████║██║   ██║██████╔╝██║   ██║
+ *  ██╔══██║██║   ██║██╔══██╗██║   ██║
+ *  ██║  ██║╚██████╔╝██║  ██║╚██████╔╝
+ *  ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ 
+ *
+ **/
+
+
+/** User input */
 class Spotting {
 	public double lat, lon, dist;
 	public int userID, route, direction;
@@ -21,6 +39,7 @@ class Spotting {
 	public static CopyOnWriteArrayList<CopyOnWriteArrayList<Spotting>> trnSpotting = new CopyOnWriteArrayList<CopyOnWriteArrayList<Spotting>>(); 
 }
 
+/** user input corresponding to current time */
 class SpottingNow	{
 	public int userID, route, direction;
 	long timeStamp;
@@ -37,6 +56,7 @@ class SpottingNow	{
 	public static ArrayList<ArrayList<ArrayList<SpottingNow>>> trnSpottingNow = new ArrayList<ArrayList<ArrayList<SpottingNow>>>();
 }
 
+/** Confidence for every 100 m segment */
 class PositionConfidence	{
 	double posConf, distNow;	
 	public boolean isPeak;

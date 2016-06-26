@@ -1,0 +1,20 @@
+System Specifications :
+    Ubuntu 14.04 OS
+    Java JRE, JIT, V8.00
+    MySQL
+    Eclipse Neon J2EE
+    Apache Tomcat V8.00
+    Android Studio (Client)
+    SQLite Database (Client)
+
+How to RUN Server :
+    Store station database in MySQL server.
+    INSTALL Eclipse and copy FindMyTrain Server as a "new dynamic web project"
+    INSTALL Tomcat, RUN Eclipse
+
+How to RUN Client :
+    INSTALL Android Studio and RUN FindMyTrain as "new Android Application"
+    Cretae GSM fingerprinting database from "Sherlock" data
+    
+    
+Enjoy "FindMyTrain"ing

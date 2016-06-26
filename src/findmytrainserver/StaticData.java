@@ -14,6 +14,7 @@ class StaticData {
 	static int numRoutes = 3;	
 }
 
+/** Station Information */
 class Station 
 {
 	public int routeID;	

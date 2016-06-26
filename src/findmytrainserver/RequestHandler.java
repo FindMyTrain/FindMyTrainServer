@@ -1,5 +1,8 @@
 package findmytrainserver;
 
+/**
+ * Servlet to store location information 'spottings' from users */
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
@@ -15,6 +18,20 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+
+
+/**
+ * Author
+ *
+ *   █████╗ ██╗   ██╗██████╗  ██████╗ 
+ *  ██╔══██╗██║   ██║██╔══██╗██╔═══██╗
+ *  ███████║██║   ██║██████╔╝██║   ██║
+ *  ██╔══██║██║   ██║██╔══██╗██║   ██║
+ *  ██║  ██║╚██████╔╝██║  ██║╚██████╔╝
+ *  ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ 
+ *
+ **/
 
 @WebServlet("/RequestHandler")
 public class RequestHandler extends HttpServlet {
@@ -57,6 +74,7 @@ public class RequestHandler extends HttpServlet {
 		long t = jarray.getValuesAs(JsonObject.class).get(jarray.size()-1).getJsonNumber("timeStamp").longValue();
 		System.out.println(t);
 		
+        /** Synchronization required (Reader-Writer problem)*/
 		lock.lock();
 		for (JsonObject loc : jarray.getValuesAs(JsonObject.class)) {
 //	        id = Integer.parseInt(loc.getString("id"));
